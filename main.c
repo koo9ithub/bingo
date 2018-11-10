@@ -26,16 +26,17 @@ int get_num_byCom()
 
 int main(int argc, char *argv[]) {
 	
+	int i;
 	int BingoTable1[N]; //make one bingotable.
 	int BingoTable2[N]; //make the other bingotable.
 	
 	initiate_bingo();
-	/*make a bingotable by random*/
+	/* make a bingotable by random */
 	
 	print_bingo();
-	/*show a bingotable that made by random*/
+	/* show a bingotable that made by random */
 	
-	for ()
+	for (i=0; i<N; i++)
 	{
 		get_num_byMe();
 		get_num_byCom();
