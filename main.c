@@ -9,12 +9,22 @@
 
 
 
-int initiate_bingo(table[][N])
+int initiate_bingo(int *table)
 {
+		int i, j;
+		
+		srand((unsigned)time(NULL));
+		
+		for (i=0; i<N; i++){
+			for (j=0; j<N; j++){
+				printf("%d", 1+rand()%N*N);	
+			}
+		}
+	
 }
 /* make a initial bingotable. */
 
-int print_bingo(table[][N])
+int print_bingo(int table[N][N])
 {
 }
 /* print a present bingotable. */
@@ -47,16 +57,18 @@ int main(int argc, char *argv[]) {
 	
 	int i;
 	int num_turn;
+	int Mybt[N][N];
+	int Combt[N][N];
 	char winner;
 	
 	
 	
 	/* initial preperation */
 
-	initiate_bingo(Mybt[][N]);
-	initiate_bingo(Combt[][N]);
+	initiate_bingo(Mybt[N][N]);
+	initiate_bingo(Combt[N][N]);
 	
-	print_bingo(Mybt[][N]);
+	print_bingo(Mybt[N][N]);
 	
 	
 	
