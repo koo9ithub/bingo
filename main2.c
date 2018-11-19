@@ -18,16 +18,48 @@
 	void initate_bingo();
 	void random_bingo(int *table);
 	
-	void print_bingo(int Mybt[N][N]);
-	
 	int get_number_byMe(int me);
-	void print_bingo(int Mybt[N][N]);
+	void process_bingo(int bt[N][N], int choice);	// bt: bingo table
+	void print_bingo(int bt[N][N]);
+	
+	int get_number_byCom(int com);
+	void process_bingo(int bt[N][N], int choice);
+	
 	int count_bingo();
 	
-	void process_bingo();
-	int get_number_byCom();
+/* 메인 함수 */ 
 	
+int main(int argc, char *argv[]) {
 	
+	int i;
+	int me, com;
+	int Mychoice, Comchoice;
+	int Mybt[N][N], Combt[N][N];
+	
+	int winner;
+	int num_turn; 
+	
+	i=count_bingo();
+	
+	for (i=0; i<M; i++)
+	{
+		get_num_byMe(me);
+		process_bingo(&Mybt[N][N], Mychoice);
+		print_bingo(&Mybt[N][N]);
+		
+		get_num_byCom(com);
+		process_bingo(&Combt[N][N], Comchoice);
+	}
+	
+	printf("Winner: %c", winner);
+	
+	printf("How many turns? %i turns.", num_turn);
+
+	return 0;
+
+}
+
+/* initiate_bingo: 빙고 테이블을 초기에 만들어 줌. */ 
 	
 	
 	
