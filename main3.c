@@ -6,9 +6,11 @@
 #define	N		5		//bingo table 사이즈: N*N 
 #define M		3		//bingo에서 이기는 조건
 /* 필요에 따라 바꿀 수 있는 기호상수 정의. */ 
-
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
+
+
+/* 1. initiate_bingo: 빙고 테이블을 초기에 만들어줌. */
 void initiate_bingo(){ 
 
 	int Bingotable[N][N]={{0},{0},{0},{0},{0}}; //bingo table 초기화
@@ -20,7 +22,7 @@ void initiate_bingo(){
 	
 	srand((unsigned)time(NULL));
 	
-	while (top<25){
+	while (top < N*N){
 		
 		overlap[top] = 1 + rand()%(N*N);
 		
@@ -52,13 +54,42 @@ void initiate_bingo(){
 }
 
 
+/* 2. print_bingo: 빙고 테이블 현재 상황을 화면에 출력 */
+void print_bingo(int Bingotable[][N], char check[][N]){
+	
+	int j, k;
+	char left0 = '(';
+	char right0 = ')';
+	
+	for (j=0; j<N; j++){
+		for (k=0; k<N; k++){
+			
+			if (check[j][k] == '0'){
+				
+				printf("%c%2d%c", left0, Bingotable[j][k], right0);
+			}
+			else{
+				printf("%2d", Bingotable[j][k]);
+			}
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+
 		
  
 
 int main(int argc, char *argv[]) {
 	
+	int Mybt[N][N];
+	char check[N][N];
+	
 	printf("***** BINGO GAME with your computer ******\n");
 	
+	initiate_bingo();
+	print_bingo(Mybt, check);
 	
 	return 0;
 }
