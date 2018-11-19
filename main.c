@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include <stdio.h>		//표준 입출력 
+#include <stdlib.h> 	//표준 라이브러리 
+#include <time.h>		//시간 처리 (.h: 헤더 파일) 
 
 #define N		5	//size of bingo (N*N)
 #define M		3	//line that is a requirement for winning
@@ -9,23 +9,37 @@
 
 
 
-int initiate_bingo(int *table)
+int initiate_bingo()
 {
 		int i, j;
+		int max = N*N-1;
+		int rand_choice;	//난수 집합에서 제외할 수 (랜덤 선택되어 이미 나옴.) 
+		int Rand_choice;	//계속 해서 바뀌는 난수 집합 
 		
-		srand((unsigned)time(NULL));
+		srand((unsigned)time(NULL)); 
 		
 		for (i=0; i<N; i++){
 			for (j=0; j<N; j++){
-				printf("%d", 1+rand()%N*N);	
+				
+				rand_choice = 1+rand()%max;
+				Rand_choice = 1+rand()%max - rand_choice;
+				
+				if (j == 0)
+				printf("%d", rand_choice);
+				else
+				printf("%d", Rand_choice);
+					
 			}
 		}
+		
+		return 0; 
 	
 }
 /* make a initial bingotable. */
 
 int print_bingo(int table[N][N])
 {
+	
 }
 /* print a present bingotable. */
 
