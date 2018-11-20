@@ -11,7 +11,8 @@
 
 
 /* 1. 필요한 함수들을 선언. */
-void initiate_bingo(int *);
+void start_bingo();
+void initiate_bingo(int *Bingotable);
 void print_bingo();
 int get_number_byMe();
 int get_number_byCom();
@@ -35,3 +36,46 @@ int main(int argc, char *argv[]) {
 	}
 	return 0;
 }
+
+/* 3. start_bingo: 빙고 테이블을 초기에 만들어줌. */
+void start_bingo() {
+	
+	int Bingotable[N][N]; //Bingotable 정의 
+	int count; //가로, 세로, 대각선이 채워진 줄 수 
+	int intitiate_bingo(); //Bingotable 초기화 
+	
+	while(1) //누군가가 이길 때까지 반복 
+	{
+		count = count_bingo(Bingotable);
+		print_bingo(Bingotable, count);
+		
+		if (count >= M) {
+			break;
+		}
+		
+	}
+}
+
+/* 4. initiate_bingo: 빙고 테이블을 초기화 */
+void initiate_bingo(int *Bingotable) {
+	
+	srand((unsigned)time(NULL)); //난수 함수 
+	
+	int i;
+	for (i=0; i<N*N, i++) {
+		Bingotable[i] = 1 + i;
+	}
+	
+	f	 
+}
+
+
+
+
+
+
+
+
+
+
+
