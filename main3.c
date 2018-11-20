@@ -12,11 +12,11 @@
 
 /* 1. 필요한 함수들을 선언. */
 void start_bingo();
-void initiate_bingo(int *Bingotable);
-void print_bingo();
-int get_number_byMe();
-int get_number_byCom();
-void process_bingo();
+void initiate_bingo(int *);
+void print_bingo(int *, int);
+int get_number_byMe(int *);
+int get_number_byCom(int *);
+void process_bingo(int *);
 int count_bingo();
 		
  
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 		
 		printf("***** BINGO GAME with your computer ******\n");
 	
-		initiate_bingo();
+		initiate_bingo(Mybt);
 		print_bingo(Mybt);
 	
 	}
@@ -62,11 +62,25 @@ void initiate_bingo(int *Bingotable) {
 	srand((unsigned)time(NULL)); //난수 함수 
 	
 	int i;
-	for (i=0; i<N*N, i++) {
-		Bingotable[i] = 1 + i;
-	}
+	for (i=0; i<N*N; i++) {
+		
+		Bingotable[i] = i + 1;
 	
-	f	 
+	}
+	for (i=0; i<100; i++) {
+		
+		int random1 = rand()%(N*N);
+		int random2 = rand()%(N*N);
+		
+		int temp = Bingotable[random1];
+		Bingotable[random1] = Bingotable[random2];
+		Bingotable[random2] = temp;
+		/* temp라는 변수에 임의의 빙고판1을 저장하고,
+		   임의의 빙고판1에는 임의의 빙고판2를 저장한 후,
+		   temp를 임의의 빙고판2에 저장해 준다.
+		   => 숫자의 배열이 서로 바뀐다.               */
+		
+	}
 }
 
 
