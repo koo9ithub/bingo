@@ -113,14 +113,14 @@ void initiate_bingo(int *Bingotable) {
 }
 
 /* 5. print_bingo: 빙고판의 현재 상황을 출력하는 함수 */
-void print_bingo(int *, int) {
+void print_bingo(int *Bingotable, int count) {
 	
 	int i, j;
-	for (j=0; j<N; j++) {
-		for(i=0; i<N; i++) {
-			if (Bingotable[j][i] != 0 )			//거의 대부분의 경우 출력되도록 설정 
+	for (i=0; i<N; i++) {
+		for(j=0; j<N; j++) {
+			if (Bingotable[i][j] != 0 )			//거의 대부분의 경우 출력되도록 설정 
 			{
-				printf("7d%", Bingotable[j][i]);
+				printf("7d%", Bingotable[i][j]);
 			}	
 			else 
 			{
@@ -132,11 +132,11 @@ void print_bingo(int *, int) {
 }
 
 /* 6. get_number_byMe: 내가 빙고 번호의 입력을 선택 */
-int get_number_byMe(int *) {
+int get_number_byMe(int *Bingotable) {
 	
-	int i;
 	int num;
 	int overlap;		//이미 입력되어 중복인지 확인할 변수 선언 
+	int i;
 	
 	while (1)
 	{
@@ -144,7 +144,7 @@ int get_number_byMe(int *) {
 		printf("Choose a number which you want to erase: ");
 		scanf("%d", &num);
 		
-		if (num<1 || num>25)
+		if (num<1 || num>(N*N))
 		{
 			printf("ERROR: 1~N*N number, please.");
 		} 
@@ -172,18 +172,65 @@ int get_number_byMe(int *) {
 } 
 
 /* 7. get_number_byCom: 컴퓨터가 임의로 빙고 번호 선택 */
-int get_number_byCom(int *) {
+int get_number_byCom(int *Bingotable) {
 	
 } 
 
 /* 8. process_bingo: 선택한 숫자를 입력받아서 빙고 테이블 칸을 채움. */
-void process_bingo(int *) {
+void process_bingo(int *Bingotable) {
 	
 }
 
 /* 9. count_bingo: 빙고테이블이 받은 가로, 세로, 대각선의 줄 수를 계산해서 반환 */
-int count_bingo() {
+int count_bingo(int *Bingotable) {
 	
+	int Bingocount[N+N+2] = {0};		//최대 만들어질 수 있는 빙고수: 가로(N)+세로(N)+대각선(2) 
+	int count = 0;						//빙고수를 저장할 변수 
+	int i, j;
+	
+	for (i=0; i<N; i++) {
+		for (j=0; j<N; j++) {
+			if (Bingotable[i*N + j] == -1)
+			{
+				Bingocount[i]++;
+			}
+		}
+	}									//가로 N줄 확인 
+	
+	for (i=0; i<N; i++) {
+		for (j=0; j<N; j++) {
+			if (Bingotable[j*N + i] == -1)
+			{
+				Bingocount[i+N]++;
+			}
+		}
+	}									//세로 N줄 확인
+	
+	for (i=0; i<N; i++) {
+		for (j=0; j<N; j++) {
+			if (Bingotable[i*N + j] == -1)
+			{
+				Bingocount[N+N]++;
+			}
+		}
+	}									//대각선(왼쪽위 -> 오른쪽아래) 확인
+	
+	for (i=0; i<N; i++) {
+		for (j=0; j<N; j++) {
+			if (Bingotable[j*N + i] == -1)
+			{
+				Bingocount[N+N+1]++;
+			}
+		} 
+	}									//대각선(오른쪽위 -> 왼쪽아래) 확인
+	
+	for (i=0; i<(N+N+2); i++) {
+		if (Bingocount[i] == M)
+		{
+			count++;
+		}
+	} 
+	return count;
 }
 
 
