@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 		initiate_bingo(Mybt);
 		initiate_bingo(Combt);  
 		
-		print_bingo(Mybt, count_bingo(Mybt));
+		print_bingo(Mybt, count_bingo(Mybt)); //출력되는 것은 오직 "내 빙고판" 
 		
 		while(1)		//승리자가 나올 때까지 무한 반복
 		{
@@ -50,19 +50,19 @@ int main(int argc, char *argv[]) {
 			
 			if (count_bingo(Mybt) >= M || count_bingo(Combt) >= M)
 			{
-				if (count_bingo(Mybt) >= M && count_bingo(Combt) < M)
+				if (count_bingo(Mybt) >= M && count_bingo(Combt) < M) //승리자:Me 
 				{
 					printf("Winner is YOU.");
 					printf("tries: %i", tries);
 					break;
 				}
-				else if (count_bingo(Mybt) < M && count_bingo(Combt) >= M)
+				else if (count_bingo(Mybt) < M && count_bingo(Combt) >= M) //승리자:Com 
 				{
 					printf("Winner is your COM.");
 					printf("tries: %i", tries);
 					break;
 				}
-				else
+				else //동시에 빙고! 
 				{
 					printf("TIE.");
 					printf("tries: %i\n", tries);
@@ -98,7 +98,7 @@ int initiate_bingo(int Bingotable[N][N]) {
 			/* temp라는 변수에 임의의 빙고판1을 저장하고,
 		   임의의 빙고판1에는 임의의 빙고판2를 저장한 후,
 		   temp를 임의의 빙고판2에 저장해 준다.
-		   => 숫자의 배열이 서로 바뀐다.               */
+		   => 숫자의 배열이 서로 바뀐다.(swap)               */
 		}
 	}
 	return 0;
@@ -129,7 +129,6 @@ int get_number_byMe() {
 	
 	int num;
 	int i;
-	//int out=0;
 	int overlap[100];
 	
 	while(1) {
@@ -152,7 +151,7 @@ int get_number_byMe() {
 		}
 		if (i == tries) break;
 	}
-	tries++;
+	tries++; //게임 시도 횟수=입력 횟수 
 	return num;
 }
 		
