@@ -1,8 +1,8 @@
 #include <stdio.h>		//표준 입출력 
 #include <stdlib.h>		//표준 라이브러리 
-#include <time.h>		//시간 처리 (.h: 헤더 파일) 
+#include <time.h>		//시간 처리 
 /* 컴파일러에서 제공하는 함수들을 불러온다. */ 
-#include "bingo.h" 
+#include "bingo.h"		//함수 선언들을 헤더 파일에 선언 
 
 #define	N		5		//bingo table 사이즈: N*N 
 #define M		2		//bingo에서 이기는 조건
@@ -24,9 +24,11 @@ int main(int argc, char *argv[]) {
 		int numMe, numCom;
 		
 		printf("***** BINGO GAME with your computer ******\n");
-	
+		
+		srand((unsigned)time(NULL)); //빙고판을 임의로 배열해줄 난수 함수 
+			
 		initiate_bingo(Mybt);
-		initiate_bingo(Combt);
+		initiate_bingo(Combt);  
 		
 		print_bingo(Mybt, count_bingo(Mybt));
 		
@@ -77,8 +79,7 @@ int main(int argc, char *argv[]) {
    숫자가 중복되어 표현되지 않도록 설정해 준다. */
 int initiate_bingo(int Bingotable[N][N]) {
 	
-	int cnt=1;
-	srand((unsigned)time(NULL)); //난수 함수 
+	int cnt=1; 
 	
 	int i, j;
 	for (i=0; i<N; i++) {
