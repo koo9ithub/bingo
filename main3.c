@@ -13,50 +13,57 @@
 /* 1. 필요한 함수들을 선언. */
 void start_bingo();
 void initiate_bingo(int *);
+
 void print_bingo(int *, int);
+
 int get_number_byMe(int *);
 int get_number_byCom(int *);
+
 void process_bingo(int *);
+
 int count_bingo();
 		
  
 /* 2. 메인 함수 */
 int main(int argc, char *argv[]) {
 	
-	while(1) 
+	while(1)		//승리자가 나올 때까지 무한 반복 
 	{
 		int Mybt[N][N];
 		int Combt[N][N]; 
 		
 		printf("***** BINGO GAME with your computer ******\n");
 	
+		start_bingo();
 		initiate_bingo(Mybt);
+		
 		print_bingo(Mybt);
 	
 	}
 	return 0;
 }
 
-/* 3. start_bingo: 빙고 테이블을 초기에 만들어줌. */
+/* 3. start_bingo: 빙고 게임 과정 */
 void start_bingo() {
 	
-	int Bingotable[N][N]; //Bingotable 정의 
-	int count; //가로, 세로, 대각선이 채워진 줄 수 
-	int intitiate_bingo(); //Bingotable 초기화 
+	int Bingotable[N][N];			//Bingotable 정의 
+	int count; 						//가로, 세로, 대각선이 채워진 줄 수 
+	intitiate_bingo(Bingotable); 	//Bingotable 초기화 
 	
-	while(1) //누군가가 이길 때까지 반복 
+	while(1)						//승리자가 나올 때까지 반복 
 	{
 		count = count_bingo(Bingotable);
 		print_bingo(Bingotable, count);
 		
 		if (count >= M) {
 			break;
+			get_number_byMe(Bingotable);
 		}
 		
 	}
 }
 
-/* 4. initiate_bingo: 빙고 테이블을 초기화 */
+/* 4. initiate_bingo: 빙고 테이블을 처음에 만들어줌. */
 void initiate_bingo(int *Bingotable) {
 	
 	srand((unsigned)time(NULL)); //난수 함수 
@@ -81,6 +88,13 @@ void initiate_bingo(int *Bingotable) {
 		   => 숫자의 배열이 서로 바뀐다.               */
 		
 	}
+}
+
+/* 5. print_bingo: 빙고판의 현재 상황을 출력하는 함수 */
+void print_bingo(int *, int) {
+	
+	
+	
 }
 
 
