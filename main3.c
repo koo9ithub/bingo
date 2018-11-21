@@ -84,31 +84,7 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-/* 3. start_bingo: 빙고 게임 초기 설정 */
-int start_bingo() {
-	
-	int Bingotable[N][N];			//Bingotable 정의 
-	int count; 						//count: 가로, 세로, 대각선이 채워진 줄 수 
-	initiate_bingo(Bingotable); 	//Bingotable 초기화 
-	
-	while(1)						//승리자가 나올 때까지 반복 
-	{
-		count = count_bingo(Bingotable);
-		print_bingo(Bingotable, count);	//count만큼을 적용한 Bingotable 출력 
-		
-		if (count >= M) 				//승리자 나옴! 
-		{
-			return 0;						//게임에서 빠져나온다. 
-		}
-		else							//count<M 이라면 다시 숫자를 입력 받음. 
-		{
-			get_number_byMe(Bingotable);
-		}
-	}
-	return 0;
-}
-
-/* 4. initiate_bingo: 빙고 테이블을 처음에 만들어줌. */
+/* 3. initiate_bingo: 빙고 테이블을 처음에 만들어줌. */
 /* 난수 함수를 이용하여 빙고판을 random으로 만들어 주되 그 숫자가 1~N*N 사이이고,
    숫자가 중복되어 표현되지 않도록 설정해 준다. */
 int initiate_bingo(int Bingotable[N][N]) {
@@ -139,7 +115,7 @@ int initiate_bingo(int Bingotable[N][N]) {
 	return 0;
 }
 
-/* 5. print_bingo: 빙고판의 현재 상황을 출력하는 함수 */
+/* 4. print_bingo: 빙고판의 현재 상황을 출력하는 함수 */
 int print_bingo(int Bingotable[N][N], int count) {
 	
 	int i, j;
@@ -159,7 +135,7 @@ int print_bingo(int Bingotable[N][N], int count) {
 	return 0;
 }
 
-/* 6. get_number_byMe: 내가 빙고 번호의 입력을 선택함. */
+/* 5. get_number_byMe: 내가 빙고 번호의 입력을 선택함. */
 int get_number_byMe() {
 	
 	int num;
@@ -193,7 +169,7 @@ int get_number_byMe() {
 		
 	
 
-/* 6-5. process_bingo: 선택된 숫자를 입력받아서 빙고판 내에서 -1로 바꿈. */
+/* 6. process_bingo: 선택된 숫자를 입력받아서 빙고판 내에서 -1로 바꿈. */
 int process_bingo(int Bingotable[N][N], int num) {
 	
 	int i, j;
