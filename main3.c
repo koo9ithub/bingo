@@ -26,20 +26,37 @@ int count_bingo();
  
 /* 2. 메인 함수 */
 int main(int argc, char *argv[]) {
-	
-	while(1)		//승리자가 나올 때까지 무한 반복 
-	{
+
 		int Mybt[N][N];
 		int Combt[N][N]; 
+		int count;
 		
 		printf("***** BINGO GAME with your computer ******\n");
 	
 		start_bingo();
 		initiate_bingo(Mybt);
 		
-		print_bingo(Mybt);
+		count = count_bingo(Mybt);
+		print_bingo(Mybt, count);
+		
+		initiate_bingo(Combt);
+		
+		while(1)		//승리자가 나올 때까지 무한 반복
+		{
+			get_number_byMe(Mybt);
+			process_bingo(Mybt);
+			print_bingo(Mybt, count);
+		
+			get_number_byCom(Combt);
+			process_bingo(Combt);
+		
+		if (count >= M)
+		{
+			break;
+		}	
+		}
 	
-	}
+	
 	return 0;
 }
 
@@ -115,7 +132,7 @@ void print_bingo(int *, int) {
 }
 
 /* 6. get_number_byMe: 내가 빙고 번호의 입력을 선택 */
-int get_number_byMe(int *Bingotable) {
+int get_number_byMe(int *) {
 	
 	int i;
 	int num;
@@ -154,9 +171,20 @@ int get_number_byMe(int *Bingotable) {
 	}
 } 
 
+/* 7. get_number_byCom: 컴퓨터가 임의로 빙고 번호 선택 */
+int get_number_byCom(int *) {
+	
+} 
 
+/* 8. process_bingo: 선택한 숫자를 입력받아서 빙고 테이블 칸을 채움. */
+void process_bingo(int *) {
+	
+}
 
-
+/* 9. count_bingo: 빙고테이블이 받은 가로, 세로, 대각선의 줄 수를 계산해서 반환 */
+int count_bingo() {
+	
+}
 
 
 
