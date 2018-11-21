@@ -11,16 +11,18 @@
 
 
 /* 1. 필요한 함수들을 선언 */
-int start_bingo();
 int initiate_bingo(int Bingotable[][N]);
 
 int print_bingo(int Bingotable[][N], int count);
 
-int get_number_byMe(int Bingotable[][N]);
-int get_number_byCom(int Bingotable[][N]);
+int get_number_byMe();
+int get_number_byCom();
+
+int process_bingo(int Bingotable[][N], int num);
 
 int count_bingo(int Bingotable[][N]);
 		
+int tries = 0;
 
  
 /* 2. 메인 함수 */
@@ -29,42 +31,51 @@ int main(int argc, char *argv[]) {
 		int Mybt[N][N];			//배열 Mybingotable 정의 
 		int Combt[N][N]; 		//배열 Combingotable 정의 
 		int count;
-		int tries;
+		int numMe, numCom;
 		
 		printf("***** BINGO GAME with your computer ******\n");
 	
-		start_bingo();
 		initiate_bingo(Mybt);
-		
-		count = count_bingo(Mybt);
-		tries = M;
-		print_bingo(Mybt, count);
-		
 		initiate_bingo(Combt);
+		print_bingo(Combt, count);
+		
+		print_bingo(Mybt, count_bingo(Mybt));
 		
 		while(1)		//승리자가 나올 때까지 무한 반복
 		{
-			get_number_byMe(Mybt);
-			print_bingo(Mybt, count);
-		
-			get_number_byCom(Combt);
-		
+			numMe = get_number_byMe();
+			process_bingo(Mybt, numMe);
+			process_bingo(Combt, numMe);
+			
+			printf("My Pick!\n");
+			print_bingo(Mybt, count_bingo(Mybt));
+			
+			numCom = get_number_byCom();
+			process_bingo(Mybt, numCom);
+			process_bingo(Combt, numCom);
+			
+			printf("Computer's Pick!\n");
+			print_bingo(Mybt, count_bingo(Mybt));
+			
 			if (count_bingo(Mybt) >= M || count_bingo(Combt) >= M)
 			{
 				if (count_bingo(Mybt) >= M && count_bingo(Combt) < M)
 				{
 					printf("Winner is YOU.");
-					printf("tries: ", tries);
+					printf("tries: %i", tries);
 					break;
 				}
 				else if (count_bingo(Mybt) < M && count_bingo(Combt) >= M)
 				{
 					printf("Winner is your COM.");
+					printf("tries: %i", tries);
 					break;
 				}
 				else
 				{
 					printf("TIE.");
+					printf("tries: %i\n", tries);
+					print_bingo(Combt, count);
 					break;
 					
 				}
@@ -87,7 +98,7 @@ int start_bingo() {
 		
 		if (count >= M) 				//승리자 나옴! 
 		{
-			break;						//게임에서 빠져나온다. 
+			return 0;						//게임에서 빠져나온다. 
 		}
 		else							//count<M 이라면 다시 숫자를 입력 받음. 
 		{
@@ -148,82 +159,70 @@ int print_bingo(int Bingotable[N][N], int count) {
 	return 0;
 }
 
-/* 6. get_number_byMe: 내가 빙고 번호의 입력을 선택하고, 선택한 것을 -1로 표시해줌. */
-int get_number_byMe(int Bingotable[N][N]) {
+/* 6. get_number_byMe: 내가 빙고 번호의 입력을 선택함. */
+int get_number_byMe() {
 	
 	int num;
-	int overlap;		//이미 입력되어 중복인지 확인할 변수 선언 
-	int i, j;
+	int i;
+	//int out=0;
+	int overlap[100];
 	
-	while (1)
-	{
-		overlap = 0;
+	while(1) {
+		
 		printf("Choose a number which you want to erase: ");
 		scanf("%d", &num);
+		overlap[tries] = num;
 		
-		if (num<1 || num>(N*N))
-		{
-			printf("ERROR: 1~N*N number, please.\n");
-		} 
-		else
-		{
-			for (i=0; i<N; i++) {
-				for (j=0; j<N; j++) {
+		if (num<1 || num>N*N) {
+			printf("ERROR: different number, please.\n");
+		}
+		else {
+			for (i=0; i<tries; i++) 
+			{
+				if (num == overlap[i]) {
+					printf("ERROR-OVERLAP: different number, please.\n");
+					break;
+				}
+			}
+		}
+		if (i == tries) break;
+	}
+	tries++;
+	return num;
+}
+		
+	
+
+/* 6-5. process_bingo: 선택된 숫자를 입력받아서 빙고판 내에서 -1로 바꿈. */
+int process_bingo(int Bingotable[N][N], int num) {
+	
+	int i, j;
+
+		for (i=0; i<N; i++) {
+			for (j=0; j<N; j++) {
 					if (Bingotable[i][j] == num)	//입력받은 수와 같은 수가 저장되어 있다면, 
 					{
 						Bingotable[i][j] = -1;		//-1을 출력
-						overlap = 1;			//overlap에 중복임을 저장 
+						 
 					}
 				}
 			}
 			
-			if (overlap == 1)				//중복임이 잘 저장되었다면, 
-			{
-				break;						//빠져나온다. 
-			}
-			else							//그렇지 않으면, 
-			{
-				printf("ERROR: different number, please."); //메시지 출력 
-			}
-		
-		}
-	}
 } 
 
+
 /* 7. get_number_byCom: 컴퓨터가 임의로 빙고 번호 선택 */
-int get_number_byCom(int Bingotable[N][N]) {
+int get_number_byCom() {
 	
-	int num;
-	int overlap;		//이미 입력되어 중복인지 확인할 변수 선언 
+	int num; 
 	int i, j;
 	
-	while (1)
-	{
-		overlap = 0;
 		srand((unsigned)time(NULL));
 		num = rand()%(N*N);
 		
-			for (i=0; i<N; i++) {
-				for (j=0; j<N; j++) {
-					if (Bingotable[i][j] == num)	//입력받은 수와 같은 수가 저장되어 있다면, 
-					{
-						Bingotable[i][j] = -1;		//-1을 출력
-						overlap = 1;			//overlap에 중복임을 저장 
-					}
-				}
-			}
+		return num;
+}
 			
-			if (overlap == 1)				//중복임이 잘 저장되었다면, 
-			{
-				break;						//빠져나온다. 
-			}
-			else							//그렇지 않으면, 
-			{
-				srand((unsigned)time(NULL));
-				num = rand()%(N*N); 		//다시 난수를 받는다. 
-			}
-	}
-} 
 
 
 /* 8. count_bingo: 빙고테이블이 받은 가로, 세로, 대각선의 줄 수를 계산해서 반환 */
@@ -231,8 +230,8 @@ int count_bingo(int Bingotable[N][N]) {
 	
 	int Bingocountrow[N] = {0};
 	int Bingocountcol[N] = {0};
-	int Bingocount1[N] = {0};
-	int Bingocount2[N] = {0};		//최대 만들어질 수 있는 빙고수: 가로(N)+세로(N)+대각선(2) 
+	int Bingocount1 = 0;
+	int Bingocount2 = 0;		//최대 만들어질 수 있는 빙고수: 가로(N)+세로(N)+대각선(2) 
 	int count = 0;						//빙고수를 저장할 변수 
 	int i, j;	
 	
@@ -265,10 +264,10 @@ int count_bingo(int Bingotable[N][N]) {
 	for (i=0; i<N; i++) {
 			if (Bingotable[i][i] == -1)
 			{
-				Bingocount1[i]++;
+				Bingocount1++;
 				
-				if (Bingocount1[i] == N) {
-				count++;
+				if (Bingocount1 == N) {
+					count++;
 				}
 			}
 	}									//대각선(왼쪽위 -> 오른쪽아래) 확인
@@ -276,15 +275,14 @@ int count_bingo(int Bingotable[N][N]) {
 	for (i=0; i<N; i++) {
 			if (Bingotable[i][(N-1)-i] == -1)
 			{
-				Bingocount2[i]++;
+				Bingocount2++;
 				
-				if (Bingocount2[i] == N) {
-				count++;
+				if (Bingocount2 == N) {
+					count++;
 				}
 			}
 	}									//대각선(오른쪽위 -> 왼쪽아래) 확인
 	
-	printf("count: %d\n", count);
 	return count;
 }
 
