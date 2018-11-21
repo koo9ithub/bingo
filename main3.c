@@ -4,7 +4,7 @@
 /* 컴파일러에서 제공하는 함수들을 불러온다. */ 
 
 #define	N		5		//bingo table 사이즈: N*N 
-#define M		3		//bingo에서 이기는 조건
+#define M		2		//bingo에서 이기는 조건
 /* 필요에 따라 바꿀 수 있는 기호상수 정의. */ 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
@@ -21,6 +21,7 @@ int get_number_byCom(int Bingotable[][N]);
 
 int count_bingo(int Bingotable[][N]);
 		
+
  
 /* 2. 메인 함수 */
 int main(int argc, char *argv[]) {
@@ -28,6 +29,7 @@ int main(int argc, char *argv[]) {
 		int Mybt[N][N];			//배열 Mybingotable 정의 
 		int Combt[N][N]; 		//배열 Combingotable 정의 
 		int count;
+		int tries;
 		
 		printf("***** BINGO GAME with your computer ******\n");
 	
@@ -35,6 +37,7 @@ int main(int argc, char *argv[]) {
 		initiate_bingo(Mybt);
 		
 		count = count_bingo(Mybt);
+		tries = M;
 		print_bingo(Mybt, count);
 		
 		initiate_bingo(Combt);
@@ -42,17 +45,16 @@ int main(int argc, char *argv[]) {
 		while(1)		//승리자가 나올 때까지 무한 반복
 		{
 			get_number_byMe(Mybt);
-			process_bingo(Mybt);
 			print_bingo(Mybt, count);
 		
 			get_number_byCom(Combt);
-			process_bingo(Combt);
 		
 			if (count_bingo(Mybt) >= M || count_bingo(Combt) >= M)
 			{
 				if (count_bingo(Mybt) >= M && count_bingo(Combt) < M)
 				{
 					printf("Winner is YOU.");
+					printf("tries: ", tries);
 					break;
 				}
 				else if (count_bingo(Mybt) < M && count_bingo(Combt) >= M)
@@ -64,6 +66,7 @@ int main(int argc, char *argv[]) {
 				{
 					printf("TIE.");
 					break;
+					
 				}
 			}	
 		}
@@ -75,7 +78,7 @@ int start_bingo() {
 	
 	int Bingotable[N][N];			//Bingotable 정의 
 	int count; 						//count: 가로, 세로, 대각선이 채워진 줄 수 
-	intitiate_bingo(Bingotable); 	//Bingotable 초기화 
+	initiate_bingo(Bingotable); 	//Bingotable 초기화 
 	
 	while(1)						//승리자가 나올 때까지 반복 
 	{
@@ -99,27 +102,28 @@ int start_bingo() {
    숫자가 중복되어 표현되지 않도록 설정해 준다. */
 int initiate_bingo(int Bingotable[N][N]) {
 	
+	int cnt=1;
 	srand((unsigned)time(NULL)); //난수 함수 
 	
 	int i, j;
 	for (i=0; i<N; i++) {
-		for (j=0;j<N;j++) {
-			Bingotable[i][j] = i + 1;
+		for (j=0; j<N; j++) {
+			Bingotable[i][j] = cnt++;
 		}
 	}
-	for (i=0; i<100; i++) {
+	for (i=0; i<N; i++) {
+		for(j=0; j<N; j++) {
 		
-		int random1 = rand()%(N*N);
-		int random2 = rand()%(N*N);
+			int random = rand()%(N*N);
 		
-		int temp = Bingotable[random1/N][random1%N];
-		Bingotable[random1/N][random1%N] = Bingotable[random2/N][random2%N];
-		Bingotable[random2/N][random2%N] = temp;
-		/* temp라는 변수에 임의의 빙고판1을 저장하고,
+			int temp = Bingotable[i][j];
+			Bingotable[i][j] = Bingotable[random/N][random%N];
+			Bingotable[random/N][random%N] = temp;
+			/* temp라는 변수에 임의의 빙고판1을 저장하고,
 		   임의의 빙고판1에는 임의의 빙고판2를 저장한 후,
 		   temp를 임의의 빙고판2에 저장해 준다.
 		   => 숫자의 배열이 서로 바뀐다.               */
-		
+		}
 	}
 	return 0;
 }
@@ -132,7 +136,7 @@ int print_bingo(int Bingotable[N][N], int count) {
 		for(j=0; j<N; j++) {
 			if (Bingotable[i][j] != 0 )			//거의 대부분의 경우 출력되도록 설정 
 			{
-				printf("7d%", Bingotable[i][j]);
+				printf("%d ", Bingotable[i][j]);
 			}	
 			else 
 			{
@@ -159,7 +163,7 @@ int get_number_byMe(int Bingotable[N][N]) {
 		
 		if (num<1 || num>(N*N))
 		{
-			printf("ERROR: 1~N*N number, please.");
+			printf("ERROR: 1~N*N number, please.\n");
 		} 
 		else
 		{
@@ -179,7 +183,7 @@ int get_number_byMe(int Bingotable[N][N]) {
 			}
 			else							//그렇지 않으면, 
 			{
-				prinf("ERROR: different number, please."); //메시지 출력 
+				printf("ERROR: different number, please."); //메시지 출력 
 			}
 		
 		}
@@ -225,52 +229,62 @@ int get_number_byCom(int Bingotable[N][N]) {
 /* 8. count_bingo: 빙고테이블이 받은 가로, 세로, 대각선의 줄 수를 계산해서 반환 */
 int count_bingo(int Bingotable[N][N]) {
 	
-	int Bingocount[N+N+2] = {0};		//최대 만들어질 수 있는 빙고수: 가로(N)+세로(N)+대각선(2) 
+	int Bingocountrow[N] = {0};
+	int Bingocountcol[N] = {0};
+	int Bingocount1[N] = {0};
+	int Bingocount2[N] = {0};		//최대 만들어질 수 있는 빙고수: 가로(N)+세로(N)+대각선(2) 
 	int count = 0;						//빙고수를 저장할 변수 
-	int i, j;
+	int i, j;	
 	
 	for (i=0; i<N; i++) {
 		for (j=0; j<N; j++) {
 			if (Bingotable[i][j] == -1)
 			{
-				Bingocount[i]++;
+				Bingocountrow[i]++;
+				
+				if (Bingocountrow[i] == N) {
+					count++;
+				}
 			}
 		}
 	}									//가로 N줄 확인 
 	
-	for (i=0; i<N; i++) {
-		for (j=0; j<N; j++) {
-			if (Bingotable[j*N + i] == -1)
+	for (j=0; j<N; j++) {
+		for (i=0; i<N; i++) {
+			if (Bingotable[i][j] == -1)
 			{
-				Bingocount[i+N]++;
+				Bingocountcol[j]++;
+				
+				if (Bingocountcol[j] == N) {
+					count++;
+				}
 			}
 		}
 	}									//세로 N줄 확인
 	
 	for (i=0; i<N; i++) {
-		for (j=0; j<N; j++) {
-			if (Bingotable[i*N + j] == -1)
+			if (Bingotable[i][i] == -1)
 			{
-				Bingocount[N+N]++;
+				Bingocount1[i]++;
+				
+				if (Bingocount1[i] == N) {
+				count++;
+				}
 			}
-		}
 	}									//대각선(왼쪽위 -> 오른쪽아래) 확인
 	
 	for (i=0; i<N; i++) {
-		for (j=0; j<N; j++) {
-			if (Bingotable[j*N + i] == -1)
+			if (Bingotable[i][(N-1)-i] == -1)
 			{
-				Bingocount[N+N+1]++;
+				Bingocount2[i]++;
+				
+				if (Bingocount2[i] == N) {
+				count++;
+				}
 			}
-		} 
 	}									//대각선(오른쪽위 -> 왼쪽아래) 확인
 	
-	for (i=0; i<(N+N+2); i++) {
-		if (Bingocount[i] == M)
-		{
-			count++;
-		}
-	} 
+	printf("count: %d\n", count);
 	return count;
 }
 
